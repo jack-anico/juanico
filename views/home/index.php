@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>HOME</h1>
+    <a href="<?= url('/products') ?>">Browse Products</a>
     
     <?php if (isAuthenticated()): ?>
         <p>Welcome, User #<?= e((string)authUserId()) ?>!</p>

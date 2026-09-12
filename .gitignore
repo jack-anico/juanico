@@ -13,9 +13,9 @@ storage/logs/*.log
 storage/cache/*
 !storage/cache/.gitkeep
 
-# Uploaded files (don't commit user uploads)
-storage/uploads/*
-!storage/uploads/.gitkeep
+# Uploaded files (don't commit user-uploaded product images)
+public/uploads/products/*
+!public/uploads/products/.gitkeep
 
 # OS-generated files
 .DS_Store

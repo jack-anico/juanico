@@ -8,8 +8,14 @@
 <body>
     <h1>admin dashboard</h1>
     <p>Welcome, Admin!</p>
-    
-    <form action="<?= url('/logout') ?>" method="POST" style="display:inline;">
+
+    <nav>
+        <a href="<?= url('/admin/products/create') ?>">Add Product</a>
+        <a href="<?= url('/admin/products') ?>">Manage Products</a>
+    </nav>
+    <br>
+
+    <form action="<?= url('/logout') ?>" method="POST">
         <?= csrf_field() ?>
         <button type="submit">Logout</button>
     </form>

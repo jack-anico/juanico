@@ -83,6 +83,17 @@ class Request
     }
 
     /**
+     * Get uploaded file info from $_FILES.
+     *
+     * @param string $key Field name
+     * @return array|null The file array or null if not uploaded
+     */
+    public function file(string $key): ?array
+    {
+        return $_FILES[$key] ?? null;
+    }
+
+    /**
      * Get all input data (GET merged with POST; POST takes precedence).
      */
     public function all(): array
