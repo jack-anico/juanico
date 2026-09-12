@@ -27,4 +27,20 @@ class ProductController extends BaseController
         $products = $this->productService->getAllActive();
         $this->response->view('products.index', ['products' => $products]);
     }
+
+    /**
+     * GET /products/{id} — Display one publicly available product.
+     */
+    public function show(string $id): void
+    {
+        $productId = filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        $product = $productId !== false ? $this->productService->getById($productId) : null;
+
+        if (!$product || !$product['is_active']) {
+            http_response_code(404);
+            $product = null;
+        }
+
+        $this->response->view('products.show', ['product' => $product]);
+    }
 }

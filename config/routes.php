@@ -38,6 +38,7 @@ $router->post('/logout', [AuthController::class, 'logout'], [AuthMiddleware::cla
 //  Public Products
 // -----------------------------------------------------------------
 $router->get('/products', [ProductController::class, 'index']);
+$router->get('/products/{id}', [ProductController::class, 'show']);
 
 use App\Controllers\CartController;
 
@@ -60,4 +61,3 @@ $router->post('/admin/products', [AdminProductController::class, 'store'], [Admi
 $router->get('/admin/products/edit/{id}', [AdminProductController::class, 'edit'], [AdminMiddleware::class]);
 $router->post('/admin/products/update/{id}', [AdminProductController::class, 'update'], [AdminMiddleware::class]);
 $router->post('/admin/products/delete/{id}', [AdminProductController::class, 'delete'], [AdminMiddleware::class]);
-

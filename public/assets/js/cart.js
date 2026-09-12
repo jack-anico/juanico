@@ -20,7 +20,6 @@ const productCatalog = new Map(JSON.parse(document.getElementById('product-data'
     .map(product => [String(product.product_id), product]));
 
 let currentDetailItem = null;
-let detailMode = 'cart';
 let cartRequestPending = false;
 let modalTrigger = null;
 let pointerStartedOutside = false;
@@ -86,15 +85,14 @@ function updateCartUI(cart) {
             element('span', 'cart-item-qty', 'Qty: ' + item.quantity + ' × ₱' + Number(item.unit_price).toFixed(2))
         );
         row.append(picture, info, element('span', 'cart-item-total', '₱' + Number(item.line_total).toFixed(2)));
-        row.addEventListener('click', () => openProductDetail(item, 'cart'));
+        row.addEventListener('click', () => openCartItemDetail(item));
         cartItemsContainer.append(row);
     });
 }
 
-// The same detail view supports browsing a product and editing a cart item.
-function openProductDetail(item, mode) {
+// Cart items can still be edited without leaving the current page.
+function openCartItemDetail(item) {
     currentDetailItem = item;
-    detailMode = mode;
     const product = { ...productCatalog.get(String(item.product_id)), ...item };
     pdContent.replaceChildren();
 
@@ -111,18 +109,15 @@ function openProductDetail(item, mode) {
     pdContent.append(
         element('h3', '', product.name),
         element('p', 'pd-description', product.description || 'No description available.'),
-        element('p', '', 'Unit Price: ₱' + Number(mode === 'cart' ? item.unit_price : product.price).toFixed(2))
+        element('p', '', 'Unit Price: ₱' + Number(item.unit_price).toFixed(2))
     );
     if (product.sku) pdContent.append(element('p', '', 'SKU: ' + product.sku));
     if (product.stock_quantity !== undefined) {
         pdContent.append(element('p', '', 'Stock available: ' + product.stock_quantity));
     }
 
-    pdQtyInput.value = mode === 'cart' ? item.quantity : 1;
+    pdQtyInput.value = item.quantity;
     pdQtyInput.setCustomValidity('');
-    backToCartBtn.hidden = mode !== 'cart';
-    pdRemoveBtn.hidden = mode !== 'cart';
-    pdUpdateBtn.textContent = mode === 'cart' ? 'Update Quantity' : 'Add to Cart';
     miniCartView.hidden = true;
     productDetailView.hidden = false;
     modalHeading.textContent = 'Product Details';
@@ -153,7 +148,7 @@ async function fetchCart() {
 async function changeCart(action, productId, quantity) {
     if (cartRequestPending) return false;
     cartRequestPending = true;
-    const actionButtons = [...document.querySelectorAll('.add-to-cart-btn'), pdUpdateBtn, pdRemoveBtn];
+    const actionButtons = [...document.querySelectorAll('.add-to-cart-btn, .product-add-btn'), pdUpdateBtn, pdRemoveBtn];
     actionButtons.forEach(button => { button.disabled = true; });
     try {
         const response = await fetch(appUrl('/cart/' + action), {
@@ -203,18 +198,24 @@ cartModal.addEventListener('close', () => {
     if (modalTrigger?.isConnected) modalTrigger.focus({ preventScroll: true });
 });
 
-document.querySelectorAll('.product-details-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const product = productCatalog.get(button.dataset.id);
-        if (product) openProductDetail(product, 'preview');
-    });
-});
-
 document.querySelectorAll('.add-to-cart-btn').forEach(button => {
     button.addEventListener('click', async () => {
         if (await changeCart('add', button.dataset.id, 1)) showFeedback('Added to cart!');
     });
 });
+
+const productAddForm = document.getElementById('product-add-form');
+const productQuantity = document.getElementById('product-quantity');
+if (productAddForm && productQuantity) {
+    productQuantity.addEventListener('input', () => productQuantity.setCustomValidity(''));
+    productAddForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        const quantity = Number(productQuantity.value);
+        productQuantity.setCustomValidity(Number.isSafeInteger(quantity) && quantity >= 1 ? '' : 'Enter a whole quantity of at least 1.');
+        if (!productAddForm.reportValidity()) return;
+        if (await changeCart('add', productAddForm.dataset.id, quantity)) showFeedback('Added to cart!');
+    });
+}
 
 pdQtyInput.addEventListener('input', () => pdQtyInput.setCustomValidity(''));
 pdQtyMinus.addEventListener('click', () => {
@@ -232,10 +233,9 @@ pdUpdateBtn.addEventListener('click', async () => {
     pdQtyInput.setCustomValidity(Number.isSafeInteger(quantity) && quantity >= 1 ? '' : 'Enter a whole quantity of at least 1.');
     if (!pdQtyInput.reportValidity()) return;
     const item = currentDetailItem;
-    const mode = detailMode;
-    if (await changeCart(mode === 'preview' ? 'add' : 'update', item.product_id, quantity)) {
-        if (currentDetailItem === item && detailMode === mode) showMiniCartView();
-        showFeedback(mode === 'preview' ? 'Added to cart!' : 'Quantity updated.');
+    if (await changeCart('update', item.product_id, quantity)) {
+        if (currentDetailItem === item) showMiniCartView();
+        showFeedback('Quantity updated.');
     }
 });
 pdRemoveBtn.addEventListener('click', async () => {
