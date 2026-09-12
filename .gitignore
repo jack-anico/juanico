@@ -47,4 +47,6 @@ composer.lock
 # Database (if any case I use SQLite locally)
 *.sqlite
 *.sqlite3
-*.db
+*.dba
+
+admin_credentials.txt

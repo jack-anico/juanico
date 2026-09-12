@@ -129,7 +129,14 @@ class AuthController extends BaseController
             session_regenerate_id(true);
             $_SESSION['user_id'] = $userId;
             
-            $this->response->redirect(url('/'));
+            $userRepo = new \App\Repositories\UserRepository();
+            $user = $userRepo->findById($userId);
+
+            if ($user && $user['role'] === 'admin') {
+                $this->response->redirect(url('/admin/dashboard'));
+            } else {
+                $this->response->redirect(url('/'));
+            }
         } catch (ValidationException $e) {
             $this->backWithErrors($e->getErrors(), ['identifier' => $data['identifier'] ?? '']);
         } catch (\Exception $e) {

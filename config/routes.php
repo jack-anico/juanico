@@ -29,3 +29,8 @@ $router->get('/login', [AuthController::class, 'showLoginForm'], [GuestMiddlewar
 $router->post('/login', [AuthController::class, 'login'], [GuestMiddleware::class]);
 
 $router->post('/logout', [AuthController::class, 'logout'], [AuthMiddleware::class]);
+
+// -----------------------------------------------------------------
+//  Admin
+// -----------------------------------------------------------------
+$router->get('/admin/dashboard', [\App\Controllers\AdminController::class, 'dashboard'], [\App\Middleware\AdminMiddleware::class]);
