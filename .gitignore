@@ -1,5 +1,4 @@
-rubrics/
-index.sql
+Project_Info/
 
 # Environment / secrets
 .env
