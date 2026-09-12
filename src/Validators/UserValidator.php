@@ -58,4 +58,25 @@ class UserValidator
 
         return $errors;
     }
+
+    /**
+     * Validate login form data.
+     *
+     * @param array $data Input data
+     * @return array Associative array of errors, empty if valid
+     */
+    public function validateLogin(array $data): array
+    {
+        $errors = [];
+
+        if (empty($data['identifier'])) {
+            $errors['identifier'] = 'Email or username is required.';
+        }
+
+        if (empty($data['password'])) {
+            $errors['password'] = 'Password is required.';
+        }
+
+        return $errors;
+    }
 }

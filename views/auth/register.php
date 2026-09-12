@@ -72,5 +72,7 @@
             <button type="submit">Register</button>
         </div>
     </form>
+    
+    <p>Already have an account? <a href="<?= url('/login') ?>">Login</a></p>
 </body>
 </html>

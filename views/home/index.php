@@ -10,10 +10,15 @@
     
     <?php if (isAuthenticated()): ?>
         <p>Welcome, User #<?= e((string)authUserId()) ?>!</p>
-        <!-- Later we will add a logout button -->
+        
+        <form action="<?= url('/logout') ?>" method="POST" style="display:inline;">
+            <?= csrf_field() ?>
+            <button type="submit">Logout</button>
+        </form>
     <?php else: ?>
         <p>You are not logged in.</p>
-        <a href="<?= url('/register') ?>">Register Here</a>
+        <a href="<?= url('/login') ?>">Login</a> | 
+        <a href="<?= url('/register') ?>">Register</a>
     <?php endif; ?>
 </body>
 </html>

@@ -26,11 +26,6 @@ class AuthController extends BaseController
      */
     public function showRegisterForm(): void
     {
-        // If already logged in, redirect to home
-        if (isAuthenticated()) {
-            $this->response->redirect(url('/'));
-        }
-
         $this->response->view('auth.register');
     }
 
@@ -100,5 +95,72 @@ class AuthController extends BaseController
 
         // 6. Redirect to home page
         $this->response->redirect(url('/'));
+    }
+
+    /**
+     * GET /login — Display the login form.
+     */
+    public function showLoginForm(): void
+    {
+        $this->response->view('auth.login');
+    }
+
+    /**
+     * POST /login — Process the login form submission.
+     */
+    public function login(): void
+    {
+        if (!$this->request->validateCsrf()) {
+            $this->backWithErrors(['csrf' => 'Invalid security token. Please try again.']);
+        }
+
+        $data = $this->request->only(['identifier', 'password']);
+        
+        $validator = new UserValidator();
+        $errors    = $validator->validateLogin($data);
+
+        if (!empty($errors)) {
+            $this->backWithErrors($errors, ['identifier' => $data['identifier'] ?? '']);
+        }
+
+        try {
+            $userId = $this->authService->login($data['identifier'], $data['password']);
+            
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $userId;
+            
+            $this->response->redirect(url('/'));
+        } catch (ValidationException $e) {
+            $this->backWithErrors($e->getErrors(), ['identifier' => $data['identifier'] ?? '']);
+        } catch (\Exception $e) {
+            $this->backWithErrors(
+                ['general' => 'An unexpected error occurred. Please try again.'],
+                ['identifier' => $data['identifier'] ?? '']
+            );
+        }
+    }
+
+    /**
+     * POST /logout — Destroy the session and logout.
+     */
+    public function logout(): void
+    {
+        if (!$this->request->validateCsrf()) {
+            $this->response->redirect(url('/'));
+        }
+
+        session_unset();
+        session_destroy();
+        
+        // Clear session cookie
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        $this->response->redirect(url('/login'));
     }
 }

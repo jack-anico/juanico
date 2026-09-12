@@ -25,29 +25,29 @@ class Router
     //  Route Registration
     // -----------------------------------------------------------------
 
-    public function get(string $path, array $handler): self
+    public function get(string $path, array $handler, array $middlewares = []): self
     {
-        return $this->addRoute('GET', $path, $handler);
+        return $this->addRoute('GET', $path, $handler, $middlewares);
     }
 
-    public function post(string $path, array $handler): self
+    public function post(string $path, array $handler, array $middlewares = []): self
     {
-        return $this->addRoute('POST', $path, $handler);
+        return $this->addRoute('POST', $path, $handler, $middlewares);
     }
 
-    public function put(string $path, array $handler): self
+    public function put(string $path, array $handler, array $middlewares = []): self
     {
-        return $this->addRoute('PUT', $path, $handler);
+        return $this->addRoute('PUT', $path, $handler, $middlewares);
     }
 
-    public function delete(string $path, array $handler): self
+    public function delete(string $path, array $handler, array $middlewares = []): self
     {
-        return $this->addRoute('DELETE', $path, $handler);
+        return $this->addRoute('DELETE', $path, $handler, $middlewares);
     }
 
-    private function addRoute(string $method, string $path, array $handler): self
+    private function addRoute(string $method, string $path, array $handler, array $middlewares = []): self
     {
-        $this->routes[] = compact('method', 'path', 'handler');
+        $this->routes[] = compact('method', 'path', 'handler', 'middlewares');
         return $this;
     }
 
@@ -67,6 +67,12 @@ class Router
             $params = [];
 
             if ($route['method'] === $method && $this->matchPath($route['path'], $uri, $params)) {
+                
+                foreach ($route['middlewares'] as $middleware) {
+                    $m = new $middleware();
+                    $m->handle();
+                }
+
                 [$controllerClass, $action] = $route['handler'];
 
                 $controller = new $controllerClass();

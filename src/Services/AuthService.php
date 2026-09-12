@@ -58,4 +58,30 @@ class AuthService
             'role'          => 'customer',
         ]);
     }
+
+    /**
+     * Authenticate a user by username or email.
+     *
+     * @param string $identifier Username or email
+     * @param string $password   Password
+     * @return int               The authenticated user's ID
+     * @throws ValidationException If credentials are invalid
+     */
+    public function login(string $identifier, string $password): int
+    {
+        // Try to find by email first
+        $user = $this->userRepo->findByEmail($identifier);
+        
+        // If not found by email, try by username
+        if (!$user) {
+            $user = $this->userRepo->findByUsername($identifier);
+        }
+
+        // Validate password
+        if (!$user || !password_verify($password, $user['password_hash'])) {
+            throw new ValidationException(['identifier' => 'Invalid email/username or password.']);
+        }
+
+        return (int) $user['user_id'];
+    }
 }

@@ -7,15 +7,16 @@ namespace App\Middleware;
 use App\Core\Response;
 
 /**
- * AuthMiddleware — Ensures a user is logged in.
+ * GuestMiddleware — Ensures a user is NOT logged in.
+ * Used for login and register routes.
  */
-class AuthMiddleware
+class GuestMiddleware
 {
     public function handle(): void
     {
-        if (!isAuthenticated()) {
+        if (isAuthenticated()) {
             $response = new Response();
-            $response->redirect(url('/login'));
+            $response->redirect(url('/'));
         }
     }
 }
