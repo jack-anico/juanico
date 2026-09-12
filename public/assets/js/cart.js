@@ -1,5 +1,6 @@
 const cartCountEl = document.getElementById('cart-count');
 const openCartBtn = document.getElementById('open-cart-btn');
+const checkoutBtn = document.getElementById('checkout-btn');
 const cartModal = document.getElementById('cart-modal');
 const closeCartBtn = document.getElementById('close-cart-btn');
 const modalHeading = document.getElementById('modal-heading');
@@ -61,6 +62,7 @@ function openModal() {
 function updateCartUI(cart) {
     cartCountEl.textContent = cart.item_count;
     cartSubtotalEl.textContent = Number(cart.subtotal).toFixed(2);
+    checkoutBtn.disabled = cart.items.length === 0;
     cartItemsContainer.replaceChildren();
 
     if (cart.items.length === 0) {
@@ -173,6 +175,14 @@ openCartBtn.addEventListener('click', () => {
     showMiniCartView();
     openModal();
 });
+checkoutBtn.addEventListener('click', () => {
+    if (checkoutBtn.disabled) {
+        showFeedback('Your cart is empty.', true);
+        return;
+    }
+    const returnTo = window.location.pathname + window.location.search;
+    window.location.assign(appUrl('/checkout') + '?return_to=' + encodeURIComponent(returnTo));
+});
 closeCartBtn.addEventListener('click', () => cartModal.close());
 backToCartBtn.addEventListener('click', showMiniCartView);
 
@@ -247,4 +257,10 @@ pdRemoveBtn.addEventListener('click', async () => {
     }
 });
 
-fetchCart();
+fetchCart().then(() => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.get('cart') === 'open') {
+        showMiniCartView();
+        openModal();
+    }
+});

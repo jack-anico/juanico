@@ -93,8 +93,8 @@ class AuthController extends BaseController
         session_regenerate_id(true); // Prevent session fixation (rubric #5)
         $_SESSION['user_id'] = $userId;
 
-        // 6. Redirect to home page
-        $this->response->redirect(url('/'));
+        // 6. Return to the protected page that prompted authentication, if any.
+        $this->redirectAfterAuthentication();
     }
 
     /**
@@ -132,11 +132,7 @@ class AuthController extends BaseController
             $userRepo = new \App\Repositories\UserRepository();
             $user = $userRepo->findById($userId);
 
-            if ($user && $user['role'] === 'admin') {
-                $this->response->redirect(url('/admin/dashboard'));
-            } else {
-                $this->response->redirect(url('/'));
-            }
+            $this->redirectAfterAuthentication($user);
         } catch (ValidationException $e) {
             $this->backWithErrors($e->getErrors(), ['identifier' => $data['identifier'] ?? '']);
         } catch (\Exception $e) {
@@ -169,5 +165,22 @@ class AuthController extends BaseController
         }
 
         $this->response->redirect(url('/login'));
+    }
+
+    private function redirectAfterAuthentication(?array $user = null): never
+    {
+        $intendedUrl = $_SESSION['intended_url'] ?? null;
+        unset($_SESSION['intended_url']);
+        $appBase = rtrim(url('/'), '/');
+
+        if (is_string($intendedUrl) && str_starts_with($intendedUrl, $appBase . '/')) {
+            $this->response->redirect($intendedUrl);
+        }
+
+        if (($user['role'] ?? null) === 'admin') {
+            $this->response->redirect(url('/admin/dashboard'));
+        }
+
+        $this->response->redirect(url('/'));
     }
 }

@@ -15,6 +15,7 @@
         <div class="mini-cart-subtotal">
             <strong>Grand Subtotal: ₱<span id="cart-subtotal">0.00</span></strong>
         </div>
+        <button type="button" id="checkout-btn" disabled>Checkout</button>
     </div>
 
     <!-- View 2: Product Detail Modal -->

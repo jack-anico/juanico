@@ -14,6 +14,8 @@ use App\Controllers\AuthController;
 use App\Controllers\ProductController;
 use App\Controllers\AdminController;
 use App\Controllers\AdminProductController;
+use App\Controllers\CheckoutController;
+use App\Controllers\OrderController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use App\Middleware\AdminMiddleware;
@@ -49,6 +51,14 @@ $router->get('/cart/api', [CartController::class, 'getCart']);
 $router->post('/cart/add', [CartController::class, 'add']);
 $router->post('/cart/update', [CartController::class, 'update']);
 $router->post('/cart/remove', [CartController::class, 'remove']);
+
+// -----------------------------------------------------------------
+//  Checkout & Orders
+// -----------------------------------------------------------------
+$router->get('/checkout', [CheckoutController::class, 'show'], [AuthMiddleware::class]);
+$router->post('/checkout/confirm', [CheckoutController::class, 'confirm'], [AuthMiddleware::class]);
+$router->get('/orders', [OrderController::class, 'index'], [AuthMiddleware::class]);
+$router->get('/orders/{orderNumber}', [OrderController::class, 'show'], [AuthMiddleware::class]);
 
 // -----------------------------------------------------------------
 //  Admin

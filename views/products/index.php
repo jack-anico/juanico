@@ -11,6 +11,7 @@
         <h1>Products</h1>
         <div>
             <a href="<?= url('/') ?>">Back to Home</a> | 
+            <?php if (isAuthenticated()): ?><a href="<?= url('/orders') ?>">Orders</a> | <?php endif; ?>
             <button id="open-cart-btn">Cart (<span id="cart-count">0</span>)</button>
         </div>
     </div>

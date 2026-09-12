@@ -11,6 +11,7 @@
     
     <?php if (isAuthenticated()): ?>
         <p>Welcome, User #<?= e((string)authUserId()) ?>!</p>
+        <p><a href="<?= url('/orders') ?>">Order History</a></p>
         
         <form action="<?= url('/logout') ?>" method="POST" style="display:inline;">
             <?= csrf_field() ?>

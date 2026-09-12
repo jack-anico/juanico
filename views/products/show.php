@@ -9,6 +9,7 @@
 <body>
     <nav class="products-header" aria-label="Store navigation">
         <a href="<?= url('/products') ?>">← Back to Products</a>
+        <?php if (isAuthenticated()): ?><a href="<?= url('/orders') ?>">Order History</a><?php endif; ?>
         <button type="button" id="open-cart-btn">Cart (<span id="cart-count">0</span>)</button>
     </nav>
 

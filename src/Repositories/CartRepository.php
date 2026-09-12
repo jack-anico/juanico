@@ -36,7 +36,7 @@ class CartRepository
             return null;
         }
 
-        $sql .= " LIMIT 1";
+        $sql .= " ORDER BY updated_at DESC, cart_id DESC LIMIT 1";
 
         $result = $this->db->fetch($sql, $params);
         return $result !== false ? $result : null;
@@ -118,5 +118,58 @@ class CartRepository
             'cart_id' => $cartId,
             'product_id' => $productId
         ]);
+    }
+
+    /**
+     * Move a guest cart into the signed-in account. If the account already has
+     * an active cart, merge the guest quantities into it.
+     */
+    public function adoptGuestCart(int $userId, string $sessionToken): ?array
+    {
+        $guestCart = $this->findActiveCart(null, $sessionToken);
+        $userCart = $this->findActiveCart($userId, null);
+
+        if (!$guestCart) {
+            return $userCart;
+        }
+
+        $this->db->beginTransaction();
+
+        try {
+            if (!$userCart) {
+                $this->db->execute(
+                    "UPDATE carts
+                     SET user_id = :user_id, session_token = NULL
+                     WHERE cart_id = :cart_id AND status = 'active'",
+                    ['user_id' => $userId, 'cart_id' => $guestCart['cart_id']]
+                );
+            } else {
+                $guestItems = $this->db->fetchAll(
+                    'SELECT product_id, quantity, unit_price FROM cart_items WHERE cart_id = :cart_id',
+                    ['cart_id' => $guestCart['cart_id']]
+                );
+                foreach ($guestItems as $item) {
+                    $this->addItem(
+                        (int) $userCart['cart_id'],
+                        (int) $item['product_id'],
+                        (int) $item['quantity'],
+                        (float) $item['unit_price']
+                    );
+                }
+                $this->db->execute(
+                    "UPDATE carts SET status = 'abandoned' WHERE cart_id = :cart_id",
+                    ['cart_id' => $guestCart['cart_id']]
+                );
+            }
+
+            $this->db->commit();
+        } catch (\Throwable $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            throw $e;
+        }
+
+        return $this->findActiveCart($userId, null);
     }
 }

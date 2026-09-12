@@ -25,24 +25,43 @@ class CartService
     /**
      * Resolve the active cart ID for the current session/user.
      */
-    private function resolveCartId(): int
+    private function resolveCartId(bool $createIfMissing = true): ?int
     {
         $userId = isAuthenticated() ? authUserId() : null;
-        
-        // Handle guest session token
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
+
+        if ($userId) {
+            $sessionToken = $_SESSION['cart_session_token'] ?? null;
+            $cart = $sessionToken
+                ? $this->cartRepo->adoptGuestCart($userId, $sessionToken)
+                : $this->cartRepo->findActiveCart($userId, null);
+
+            if ($sessionToken) {
+                unset($_SESSION['cart_session_token']);
+            }
+
+            if (!$cart && $createIfMissing) {
+                return $this->cartRepo->createCart($userId, null);
+            }
+
+            return $cart ? (int) $cart['cart_id'] : null;
+        }
+
         if (empty($_SESSION['cart_session_token'])) {
+            if (!$createIfMissing) {
+                return null;
+            }
             $_SESSION['cart_session_token'] = bin2hex(random_bytes(16));
         }
         $sessionToken = $_SESSION['cart_session_token'];
 
-        $cart = $this->cartRepo->findActiveCart($userId, $userId ? null : $sessionToken);
+        $cart = $this->cartRepo->findActiveCart(null, $sessionToken);
 
         if (!$cart) {
-            return $this->cartRepo->createCart($userId, $userId ? null : $sessionToken);
+            return $createIfMissing ? $this->cartRepo->createCart(null, $sessionToken) : null;
         }
 
         return (int) $cart['cart_id'];
@@ -54,7 +73,20 @@ class CartService
     public function getCartData(): array
     {
         $cartId = $this->resolveCartId();
-        $items = $this->cartRepo->getCartItems($cartId);
+        return $this->buildCartData($cartId);
+    }
+
+    /**
+     * Read the active cart without creating an empty one.
+     */
+    public function getExistingCartData(): array
+    {
+        return $this->buildCartData($this->resolveCartId(false));
+    }
+
+    private function buildCartData(?int $cartId): array
+    {
+        $items = $cartId ? $this->cartRepo->getCartItems($cartId) : [];
 
         $subtotal = 0.0;
         foreach ($items as &$item) {
@@ -65,6 +97,7 @@ class CartService
         }
 
         return [
+            'cart_id' => $cartId,
             'items' => $items,
             'subtotal' => $subtotal,
             'item_count' => array_sum(array_column($items, 'quantity'))
