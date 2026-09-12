@@ -1,0 +1,160 @@
+/* Products and dialogs share predictable sizing at every viewport width. */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html.modal-open { overflow: hidden; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: wait; }
+button:focus-visible, input:focus-visible {
+    outline: 2px solid #2459a6;
+    outline-offset: 3px;
+}
+
+.products-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: 20px;
+}
+.product-card {
+    min-width: 0;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+.product-details-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    border: 0;
+    padding: 0 0 16px;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+.product-card img {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+}
+.product-card-name { font-size: 1.2em; font-weight: bold; }
+.product-details-hint { color: #2459a6; text-decoration: underline; }
+.product-card-placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 250px;
+    background: #eee;
+}
+
+/* Bound both views to the viewport, including short landscape screens. */
+#cart-modal {
+    width: calc(100% - 2rem);
+    max-width: 36rem;
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    overflow-wrap: anywhere;
+}
+#cart-modal::backdrop { background: rgba(0, 0, 0, 0.5); }
+.modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+.modal-header h2 {
+    min-width: 0;
+    margin: 0;
+    font-size: 1.35rem;
+}
+.modal-header button { flex-shrink: 0; }
+#mini-cart-view, #product-detail-view { min-width: 0; padding: 16px; }
+.mini-cart-subtotal { margin-top: 20px; text-align: right; }
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid #eee;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+}
+.cart-item:hover { background: #f9f9f9; }
+.cart-item img, .cart-item-placeholder {
+    display: block;
+    width: 100%;
+    height: 4rem;
+    object-fit: contain;
+}
+.cart-item-placeholder { background: #eee; }
+.cart-item-info { min-width: 0; }
+.cart-item-name, .cart-item-qty { display: block; overflow-wrap: anywhere; }
+.cart-item-name, .cart-item-total { font-weight: bold; }
+.cart-item-qty { margin-top: 4px; font-size: 0.9em; color: #555; }
+
+.pd-detail-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 22rem;
+    max-height: min(45dvh, 22rem);
+    margin: 16px auto;
+    object-fit: contain;
+}
+.pd-description { white-space: pre-wrap; }
+.pd-quantity-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+.pd-qty-input { width: 4rem; min-height: 44px; text-align: center; }
+.pd-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+.pd-remove-btn { color: #b00020; margin-right: auto; }
+#cart-modal button:not(.cart-item), .add-to-cart-btn, #open-cart-btn {
+    min-height: 44px;
+    padding: 8px 12px;
+}
+#modal-feedback { margin: 0; padding: 0 16px 16px; }
+.is-error { color: #b00020; }
+
+@media (max-width: 420px) {
+    .cart-item { grid-template-columns: 3rem minmax(0, 1fr); gap: 8px; }
+    .cart-item img, .cart-item-placeholder { height: 3rem; }
+    .cart-item-total { grid-column: 2; }
+    .pd-actions > button { flex: 1 1 100%; }
+}

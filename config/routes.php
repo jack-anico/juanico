@@ -39,6 +39,16 @@ $router->post('/logout', [AuthController::class, 'logout'], [AuthMiddleware::cla
 // -----------------------------------------------------------------
 $router->get('/products', [ProductController::class, 'index']);
 
+use App\Controllers\CartController;
+
+// -----------------------------------------------------------------
+//  Cart API (AJAX)
+// -----------------------------------------------------------------
+$router->get('/cart/api', [CartController::class, 'getCart']);
+$router->post('/cart/add', [CartController::class, 'add']);
+$router->post('/cart/update', [CartController::class, 'update']);
+$router->post('/cart/remove', [CartController::class, 'remove']);
+
 // -----------------------------------------------------------------
 //  Admin
 // -----------------------------------------------------------------
