@@ -12,13 +12,11 @@
     <header class="site-header">
         <div class="top-bar">
             <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
-                        <nav class="main-nav">
+                                    <nav class="main-nav">
                 <ul>
                     <li><a href="<?= url('/#home') ?>">HOME</a></li>
                     <li><a href="<?= url('/products') ?>">PRODUCTS</a></li>
-                    <li><a href="<?= url('/#services') ?>">SERVICES</a></li>
                     <li><a href="<?= url('/#about') ?>">ABOUT</a></li>
-                    <li><a href="<?= url('/#projects') ?>">PROJECTS</a></li>
                     <li><a href="<?= url('/#contact') ?>">CONTACT</a></li>
                 </ul>
             </nav>
