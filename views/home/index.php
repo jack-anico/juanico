@@ -12,6 +12,7 @@
     <header class="site-header">
         <div class="top-bar">
             <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
+                        <button type="button" class="hamburger-btn" aria-label="Toggle navigation" onclick="document.querySelector('.main-nav').classList.toggle('nav-open')">&#9776;</button>
             <nav class="main-nav">
                 <ul>
                     <li><a href="<?= url('/#home') ?>">HOME</a></li>

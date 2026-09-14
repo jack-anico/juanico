@@ -12,6 +12,7 @@
     <header class="site-header">
         <div class="top-bar">
             <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
+                        <button type="button" class="hamburger-btn" aria-label="Toggle navigation" onclick="document.querySelector('.main-nav').classList.toggle('nav-open')">&#9776;</button>
             <nav class="main-nav">
                 <ul>
                     <li><a href="<?= url('/#home') ?>">HOME</a></li>
@@ -47,7 +48,7 @@
                 <a class="btn-primary" href="<?= url('/products') ?>" style="display:inline-block; width:auto;">Browse Products</a>
             </div>
         <?php else: ?>
-            <form action="<?= url('/checkout/confirm') ?>" method="POST" style="display:grid; grid-template-columns: 2fr 1fr; gap: 3rem; align-items:start;">
+            <form action="<?= url('/checkout/confirm') ?>" method="POST" class="grid-checkout">
                 <?= csrf_field() ?>
                 <input type="hidden" name="return_to" value="<?= e($returnUrl) ?>">
 
@@ -57,7 +58,7 @@
                     <section style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:2rem; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
                         <h2 style="font-size:1.25rem; font-weight:700; color:#0f172a; margin-bottom:1.5rem; border-bottom:1px solid #f1f5f9; padding-bottom:1rem;">Shipping Address</h2>
                         
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+                        <div class="grid-shipping">
                             <div class="form-group" style="margin:0;">
                                 <label>Full name</label>
                                 <input type="text" name="shipping_name" class="form-input" maxlength="150" required autocomplete="name" value="<?= old('shipping_name', $user['username'] ?? '') ?>">
@@ -67,12 +68,12 @@
                                 <input type="tel" name="shipping_phone" class="form-input" maxlength="30" required autocomplete="tel" value="<?= old('shipping_phone', $user['phone'] ?? '') ?>">
                             </div>
                             
-                            <div class="form-group" style="margin:0; grid-column: 1 / -1;">
+                            <div class="form-group grid-col-full" style="margin:0;">
                                 <label>Address line 1</label>
                                 <input type="text" name="shipping_line1" class="form-input" maxlength="255" required autocomplete="address-line1" value="<?= old('shipping_line1') ?>">
                             </div>
                             
-                            <div class="form-group" style="margin:0; grid-column: 1 / -1;">
+                            <div class="form-group grid-col-full" style="margin:0;">
                                 <label>Address line 2 <span style="color:#94a3b8; font-weight:400;">(optional)</span></label>
                                 <input type="text" name="shipping_line2" class="form-input" maxlength="255" autocomplete="address-line2" value="<?= old('shipping_line2') ?>">
                             </div>

@@ -11,6 +11,7 @@
     <header class="site-header">
         <div class="top-bar">
             <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
+                        <button type="button" class="hamburger-btn" aria-label="Toggle navigation" onclick="document.querySelector('.main-nav').classList.toggle('nav-open')">&#9776;</button>
             <nav class="main-nav">
                 <ul>
                     <li><a href="<?= url('/#home') ?>">HOME</a></li>
@@ -42,7 +43,7 @@
                 <p style="color:#64748b;">This product is no longer available. Browse our catalog to find something else.</p>
             </div>
         <?php else: ?>
-            <div style="display:grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap:4rem; align-items:start;">
+            <div class="grid-product-detail">
                 
                 <div class="product-page-images" style="background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:2rem; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
                     <?php if (empty($product['images'])): ?>
