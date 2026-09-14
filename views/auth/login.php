@@ -37,10 +37,10 @@
                 <?= csrf_field() ?>
                 
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" id="email" name="email" class="form-input" value="<?= old('email') ?>" required autocomplete="email" autofocus>
-                    <span class="form-error" id="emailError">
-                        <?php if (hasError('email')) echo e(errors('email')); ?>
+                    <label for="identifier">Email address or Username</label>
+                    <input type="text" id="identifier" name="identifier" class="form-input" value="<?= old('identifier') ?>" required autocomplete="username" autofocus>
+                    <span class="form-error" id="identifierError">
+                        <?php if (hasError('identifier')) echo e(errors('identifier')); ?>
                     </span>
                 </div>
 
@@ -72,17 +72,14 @@
     <script>
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         let hasError = false;
-        const email = document.getElementById('email').value.trim();
+        const identifier = document.getElementById('identifier').value.trim();
         const password = document.getElementById('password').value;
 
-        document.getElementById('emailError').textContent = '';
+        document.getElementById('identifierError').textContent = '';
         document.getElementById('passwordError').textContent = '';
 
-        if (!email) {
-            document.getElementById('emailError').textContent = 'Email is required.';
-            hasError = true;
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+        if (!identifier) {
+            document.getElementById('identifierError').textContent = 'Email or Username is required.';
             hasError = true;
         }
 
