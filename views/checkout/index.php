@@ -4,13 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - Juanico</title>
+    <link rel="stylesheet" href="<?= url('/assets/css/STYLE.css') ?>">
     <link rel="stylesheet" href="<?= url('/assets/css/cart.css') ?>">
     <link rel="stylesheet" href="<?= url('/assets/css/checkout.css') ?>">
 </head>
 <body>
-    <header class="checkout-header">
-        <a href="<?= url('/products') ?>">← Continue Shopping</a>
-        <a href="<?= url('/orders') ?>">Order History</a>
+    <header class="site-header">
+        <div class="top-bar">
+            <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
+                        <nav class="main-nav">
+                <ul>
+                    <li><a href="<?= url('/#home') ?>">HOME</a></li>
+                    <li><a href="<?= url('/products') ?>">PRODUCTS</a></li>
+                    <li><a href="<?= url('/#services') ?>">SERVICES</a></li>
+                    <li><a href="<?= url('/#about') ?>">ABOUT</a></li>
+                    <li><a href="<?= url('/#projects') ?>">PROJECTS</a></li>
+                    <li><a href="<?= url('/#contact') ?>">CONTACT</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main class="checkout-page">

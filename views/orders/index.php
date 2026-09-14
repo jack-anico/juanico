@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History - Juanico</title>
+    <link rel="stylesheet" href="<?= url('/assets/css/STYLE.css') ?>">
     <link rel="stylesheet" href="<?= url('/assets/css/checkout.css') ?>">
 </head>
 <body>
-    <header class="checkout-header">
-        <a href="<?= url('/products') ?>">← Products</a>
+    <header class="site-header">
+        <div class="top-bar">
+            <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
+                        <nav class="main-nav">
+                <ul>
+                    <li><a href="<?= url('/#home') ?>">HOME</a></li>
+                    <li><a href="<?= url('/products') ?>">PRODUCTS</a></li>
+                    <li><a href="<?= url('/#services') ?>">SERVICES</a></li>
+                    <li><a href="<?= url('/#about') ?>">ABOUT</a></li>
+                    <li><a href="<?= url('/#projects') ?>">PROJECTS</a></li>
+                    <li><a href="<?= url('/#contact') ?>">CONTACT</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main class="orders-page">
