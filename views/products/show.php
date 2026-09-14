@@ -11,7 +11,7 @@
     <header class="site-header">
         <div class="top-bar">
             <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
-                                    <nav class="main-nav">
+            <nav class="main-nav">
                 <ul>
                     <li><a href="<?= url('/#home') ?>">HOME</a></li>
                     <li><a href="<?= url('/products') ?>">PRODUCTS</a></li>
@@ -31,61 +31,64 @@
         </div>
     </header>
 
-    <main class="product-page" style="flex:1; padding: 3rem 5%; max-width: 1200px; margin: 0 auto; width:100%;">
-        <div style="margin-bottom: 2rem;">
-            <a href="<?= url('/products') ?>" style="color:#ff6b00; text-decoration:none; font-weight:600;">&larr; Back to Products</a>
+    <main class="product-page" style="flex:1; padding: 4rem 5%; max-width: 1200px; margin: 0 auto; width:100%;">
+        <div style="margin-bottom: 2.5rem;">
+            <a href="<?= url('/products') ?>" style="color:#64748b; text-decoration:none; font-weight:600; font-size:0.95rem; transition:color 0.2s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#64748b'">&larr; Back to Products</a>
         </div>
 
         <?php if (!$product): ?>
-            <h1>Product not found</h1>
-            <p>This product is no longer available. Browse our products to find something else.</p>
+            <div class="form-card" style="margin:0 auto; text-align:center;">
+                <h1 style="color:#0f172a; font-size:2rem; font-weight:800; margin-bottom:1rem;">Product not found</h1>
+                <p style="color:#64748b;">This product is no longer available. Browse our catalog to find something else.</p>
+            </div>
         <?php else: ?>
-            <div class="product-page-layout">
-                <div class="product-page-images">
+            <div style="display:grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap:4rem; align-items:start;">
+                
+                <div class="product-page-images" style="background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:2rem; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
                     <?php if (empty($product['images'])): ?>
-                        <div class="product-card-placeholder" style="height:400px; display:flex; align-items:center; justify-content:center; background:#eaeaea; color:#999; border-radius:6px;">No image available.</div>
+                        <div style="height:400px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; color:#94a3b8; border-radius:12px; font-weight:500;">No image available</div>
                     <?php else: ?>
                         <?php foreach ($product['images'] as $image): ?>
-                            <img src="<?= e(url($image['url'])) ?>" alt="<?= e($product['name']) ?>" style="border-radius:6px; border:1px solid #e5e5e5; max-height:500px; width:100%; object-fit:cover;">
+                            <img src="<?= e(url($image['url'])) ?>" alt="<?= e($product['name']) ?>" style="border-radius:8px; width:100%; max-height:500px; object-fit:contain;">
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
 
                 <div class="product-page-details">
                     <?php if (!empty($product['category_name'])): ?>
-                        <span class="badge" style="background:#1a252c; color:#fff; padding:0.3rem 0.6rem; border-radius:4px; font-size:0.75rem; font-weight:700; display:inline-block; margin-bottom:1rem;"><?= e(strtoupper($product['category_name'])) ?></span>
+                        <span class="badge" style="margin-bottom:1.5rem;"><?= e(strtoupper($product['category_name'])) ?></span>
                     <?php endif; ?>
-                    <h1 style="color:#1a252c; font-size:2.5rem; margin-bottom:1rem;"><?= e($product['name']) ?></h1>
                     
-                    <p class="product-page-price" style="font-size:2rem; color:#1a252c; font-weight:800; margin-bottom:1.5rem;">₱<?= e(number_format((float) $product['price'], 2)) ?></p>
+                    <h1 style="color:#0f172a; font-size:3rem; font-weight:800; letter-spacing:-1px; margin-bottom:1rem; line-height:1.2;"><?= e($product['name']) ?></h1>
                     
-                    <div style="background:#fff; border:1px solid #e5e5e5; padding:1.5rem; border-radius:6px; margin-bottom:1.5rem;">
-                        <h4 style="margin-bottom:0.5rem; color:#1a252c;">Description</h4>
-                        <p class="pd-description" style="color:#555; margin:0;"><?= e($product['description'] ?: 'No description available.') ?></p>
-                    </div>
+                    <p class="product-page-price" style="font-size:2.5rem; color:#0f172a; font-weight:800; margin-bottom:2rem;">₱<?= e(number_format((float) $product['price'], 2)) ?></p>
                     
-                    <div style="display:flex; gap:2rem; margin-bottom:1.5rem; color:#666; font-size:0.9rem;">
-                        <p><strong>SKU:</strong> <?= e($product['sku']) ?></p>
+                    <div style="display:flex; gap:2rem; margin-bottom:2rem; padding:1rem 0; border-top:1px solid #e2e8f0; border-bottom:1px solid #e2e8f0; font-size:0.95rem;">
+                        <p style="color:#475569;"><strong>SKU:</strong> <?= e($product['sku']) ?></p>
                         <?php if ($product['stock_quantity'] > 0): ?>
                             <p class="status-active"><strong>Stock:</strong> In Stock (<?= (int) $product['stock_quantity'] ?>)</p>
                         <?php else: ?>
                             <p class="status-inactive"><strong>Stock:</strong> Out of Stock</p>
                         <?php endif; ?>
                     </div>
+                    
+                    <div style="margin-bottom:2.5rem;">
+                        <h4 style="margin-bottom:0.75rem; color:#0f172a; font-size:1.1rem; font-weight:700;">Description</h4>
+                        <p style="color:#475569; line-height:1.7;"><?= e($product['description'] ?: 'No description available.') ?></p>
+                    </div>
 
-                    <form id="product-add-form" data-id="<?= (int) $product['product_id'] ?>" style="background:#f9f9f9; padding:1.5rem; border-radius:6px; border:1px solid #e5e5e5;">
-                        <div class="pd-quantity-controls" style="margin-top:0;">
-                            <label for="product-quantity" style="font-weight:600; color:#1a252c;">Quantity:</label>
-                            <input type="number" id="product-quantity" name="quantity" class="form-input pd-qty-input" value="1" min="1" max="<?= (int) $product['stock_quantity'] ?>" step="1" required inputmode="numeric" style="width:80px;">
+                    <form id="product-add-form" data-id="<?= (int) $product['product_id'] ?>" style="background:#fff; padding:2rem; border-radius:12px; border:1px solid #e2e8f0; box-shadow:0 10px 15px -3px rgba(0,0,0,0.05);">
+                        <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1.5rem;">
+                            <label for="product-quantity" style="font-weight:600; color:#0f172a;">Quantity:</label>
+                            <input type="number" id="product-quantity" name="quantity" class="form-input" value="1" min="1" max="<?= (int) $product['stock_quantity'] ?>" step="1" required inputmode="numeric" style="width:100px; text-align:center; font-size:1.1rem;">
                         </div>
-                        <button type="submit" class="btn-primary product-add-btn" style="width:100%; border:none; cursor:pointer;" <?= $product['stock_quantity'] <= 0 ? 'disabled' : '' ?>>Add to Cart</button>
+                        <button type="submit" class="btn-primary" style="width:100%; padding:1.2rem; font-size:1.1rem;" <?= $product['stock_quantity'] <= 0 ? 'disabled' : '' ?>>Add to Cart</button>
                     </form>
                 </div>
             </div>
         <?php endif; ?>
     </main>
 
-    <!-- Basic Footer -->
     <footer class="site-footer">
         <div class="footer-bottom" style="padding-top:1rem; border-top:none;">
             <p>&copy; 2026 Juanico. All rights reserved.</p>

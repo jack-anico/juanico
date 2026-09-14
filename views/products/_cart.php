@@ -12,10 +12,12 @@
             <!-- Items rendered here via JS -->
         </div>
 
-        <div class="mini-cart-subtotal">
-            <strong>Grand Subtotal: ₱<span id="cart-subtotal">0.00</span></strong>
+        <div class="mini-cart-footer">
+            <div class="mini-cart-subtotal">
+                <strong>Subtotal <span>₱<span id="cart-subtotal">0.00</span></span></strong>
+            </div>
+            <button type="button" id="checkout-btn" disabled>Proceed to Checkout</button>
         </div>
-        <button type="button" id="checkout-btn" disabled>Checkout</button>
     </div>
 
     <!-- View 2: Product Detail Modal -->

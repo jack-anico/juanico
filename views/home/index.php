@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juanico - Trusted Construction Supplier</title>
+    <title>Juanico - Premium Construction Materials</title>
     <link rel="stylesheet" href="<?= url('/assets/css/STYLE.css') ?>">
+    <link rel="stylesheet" href="<?= url('/assets/css/cart.css') ?>">
 </head>
-<body>
-
+<body style="display:flex; flex-direction:column; min-height:100vh;">
+    <!-- Global Navigation Header -->
     <header class="site-header">
         <div class="top-bar">
             <a href="<?= url('/') ?>" class="logo" style="text-decoration:none;">JUANICO</a>
-                                    <nav class="main-nav">
+            <nav class="main-nav">
                 <ul>
                     <li><a href="<?= url('/#home') ?>">HOME</a></li>
                     <li><a href="<?= url('/products') ?>">PRODUCTS</a></li>
@@ -25,176 +26,191 @@
                         <?= csrf_field() ?>
                         <button type="submit" class="btn-shop" style="border:none; cursor:pointer;">LOGOUT</button>
                     </form>
+                <?php else: ?>
+                    <a href="<?= url('/login') ?>" class="btn-shop" style="background:transparent; color:#0f172a; border:1px solid #e2e8f0;">LOGIN</a>
                 <?php endif; ?>
-                <a href="#cart" id="open-cart-btn" class="btn-shop">CART</a>
+                <a href="#cart" id="open-cart-btn" class="btn-shop">CART (<span id="cart-count">0</span>)</a>
             </div>
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero-section" id="home">
         <div class="hero-content">
-            <span class="hero-tag">TRUSTED CONSTRUCTION SUPPLIER</span>
-            <h1>QUALITY MATERIALS<br>FOR EVERY BUILD</h1>
-            <p>From lumber to hardware, we supply everything contractors and DIY builders need in stock, ready for pickup or delivery.</p>
+            <span class="hero-tag">New Collection 2026</span>
+            <h1>Build With The Best Quality Materials</h1>
+            <p>From foundations to finishing touches, Juanico provides industry-leading construction supplies trusted by top professionals across the nation.</p>
             <div class="hero-buttons">
-                <a href="<?= url('/products') ?>" class="btn-primary">SHOP PRODUCTS</a>
-                <a href="#about" class="btn-secondary">LEARN MORE</a>
+                <a href="<?= url('/products') ?>" class="btn-primary">Shop Materials</a>
+                <a href="#about" class="btn-secondary">Learn More</a>
             </div>
         </div>
     </section>
 
-    <section class="stats-bar">
+    <!-- Quick Stats Bar -->
+    <div class="stats-bar">
         <div class="stat-item">
-            <h2>15+</h2>
-            <p>Years of Experience</p>
+            <h2>15k+</h2>
+            <p>Products in Stock</p>
         </div>
         <div class="stat-item">
-            <h2>1,200+</h2>
-            <p>Projects Supplied</p>
-        </div>
-        <div class="stat-item">
-            <h2>50+</h2>
-            <p>Product Categories</p>
+            <h2>98%</h2>
+            <p>On-Time Delivery</p>
         </div>
         <div class="stat-item">
             <h2>24/7</h2>
-            <p>Delivery Support</p>
+            <p>Expert Support</p>
         </div>
-    </section>
+        <div class="stat-item">
+            <h2>50+</h2>
+            <p>Partner Brands</p>
+        </div>
+    </div>
 
-    <section class="catalog-section" id="categories">
+    <!-- Featured Categories / Products Preview -->
+    <section class="catalog-section" id="products">
         <div class="section-header">
-            <h3>OUR CATALOG</h3>
-            <h2>Everything For Your Build</h2>
-            <p>Browse our full range of construction supplies, organized to help you find what you need</p>
+            <h3>Featured Collection</h3>
+            <h2>Most Popular Supplies</h2>
+            <p>Discover our top-selling construction materials, handpicked for exceptional durability and value.</p>
         </div>
+        
         <div class="catalog-grid">
             <div class="catalog-card">
-                <h4>Lumber & Materials</h4>
-                <p>Plywood, drywall, framing</p>
+                <h4>Cement & Aggregates</h4>
+                <p>Premium grade cement, sand, and gravel for strong foundations.</p>
             </div>
             <div class="catalog-card">
-                <h4>Tools & Equipment</h4>
-                <p>Power tools, hand tools, machinery</p>
+                <h4>Steel & Metals</h4>
+                <p>High-tensile rebar, structural steel, and roofing materials.</p>
             </div>
             <div class="catalog-card">
-                <h4>Safety & PPE</h4>
-                <p>Helmets, vests, gloves</p>
+                <h4>Lumber & Wood</h4>
+                <p>Treated plywood, hardwoods, and framing lumber.</p>
             </div>
             <div class="catalog-card">
-                <h4>Plumbing & Electrical</h4>
-                <p>Pipes, wiring, fixtures</p>
+                <h4>Tools & Hardware</h4>
+                <p>Professional grade power tools, fasteners, and safety gear.</p>
             </div>
-            <div class="catalog-card">
-                <h4>Concrete & Masonry</h4>
-                <p>Cement, blocks, mortar</p>
-            </div>
-            <div class="catalog-card">
-                <h4>Hardware & Fasteners</h4>
-                <p>Screws, nails, anchors</p>
-            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="<?= url('/products') ?>" class="btn-primary">View Full Catalog &rarr;</a>
         </div>
     </section>
 
+    <!-- Why Choose Us / About -->
     <section class="why-choose-us" id="about">
         <div class="container">
-            <span class="sub-title">WHY CHOOSE US</span>
-            <h2>Built On Trust & Reliability</h2>
-            <p>For over 15 years, contractors and homeowners across the region have counted on Juanico for quality materials, fair pricing, and a team that knows construction inside and out.</p>
+            <span class="sub-title">WHY JUANICO</span>
+            <h2>We Deliver Excellence Every Time</h2>
+            <p>We understand that in construction, time and quality are everything. That's why we've built a supply chain you can depend on, day in and day out.</p>
+            
             <ul class="features-list">
-                <li>Licensed & Insured Supplier</li>
-                <li>Same-Day Local Delivery</li>
-                <li>Bulk & Contractor Pricing Available</li>
-                <li>Expert Staff Support On-Site</li>
+                <li>Same-day dispatch on in-stock items</li>
+                <li>Wholesale pricing for bulk orders</li>
+                <li>Certified quality control on all materials</li>
+                <li>Dedicated account managers</li>
             </ul>
         </div>
     </section>
 
+    <!-- Testimonials -->
     <section class="testimonials-section">
         <div class="section-header">
-            <span>TESTIMONIALS</span>
-            <h2>What Our Clients Say</h2>
+            <h3>Testimonials</h3>
+            <h2>What Builders Are Saying</h2>
         </div>
         <div class="testimonials-grid">
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
-                <p>"Juanico has been our go-to supplier for every project. Fast delivery and the staff always knows exactly what we need."</p>
+                <p>"Juanico has completely transformed our procurement process. Their steel quality is unmatched, and deliveries are always exactly on schedule."</p>
                 <div class="client-info">
                     <div class="avatar"></div>
                     <div>
-                        <h5>Marco Delgado</h5>
-                        <span>Delgado Builders</span>
+                        <h5>Robert Chen</h5>
+                        <span>Lead Engineer, BuildCo</span>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
-                <p>"Great prices on bulk materials and the quality is always consistent. My crew trusts them on every job site."</p>
+                <p>"The best supplier we've worked with in 15 years. Their bulk pricing on cement and aggregates helped us stay under budget for our latest high-rise."</p>
                 <div class="client-info">
                     <div class="avatar"></div>
                     <div>
-                        <h5>Angela Ruiz</h5>
-                        <span>Ruiz Contracting</span>
+                        <h5>Maria Rodriguez</h5>
+                        <span>Procurement Manager</span>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
-                <p>"As a first-time DIYer, the team walked me through exactly what I needed. Made my whole renovation so much easier!"</p>
+                <p>"Exceptional customer service. When we had a last-minute change in specs, their team worked over the weekend to get us the new materials."</p>
                 <div class="client-info">
                     <div class="avatar"></div>
                     <div>
-                        <h5>Tomas Reyes</h5>
-                        <span>Homeowner</span>
+                        <h5>David Smith</h5>
+                        <span>Independent Contractor</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CTA Section -->
     <section class="cta-banner" id="contact">
-        <div class="container">
-            <h2>Ready To Start Your Next Project?</h2>
-            <p>Visit a branch, call our team, or request a quote online today</p>
-            <a href="<?= url('/products') ?>" class="btn-primary">START SHOPPING</a>
-        </div>
+        <h2>Ready to start building?</h2>
+        <p>Create an account today to access wholesale pricing and instant quotes.</p>
+        <?php if (!isAuthenticated()): ?>
+            <a href="<?= url('/register') ?>" class="btn-primary">Create Free Account</a>
+        <?php else: ?>
+            <a href="<?= url('/products') ?>" class="btn-primary">Shop Now</a>
+        <?php endif; ?>
     </section>
 
+    <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-grid">
             <div class="footer-col">
-                <h3>JUANICO</h3>
-                <p>Quality construction materials and tools for every build.</p>
+                <h3 style="font-weight:800; font-size:1.5rem; letter-spacing:-0.5px; color:#fff;">JUANICO</h3>
+                <p>Providing the highest quality construction materials for builders, contractors, and developers across the region.</p>
             </div>
             <div class="footer-col">
-                <h4>PRODUCTS</h4>
+                <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="#">Lumber & Materials</a></li>
-                    <li><a href="#">Tools & Equipment</a></li>
-                    <li><a href="#">Hardware & Fasteners</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>COMPANY</h4>
-                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="<?= url('/products') ?>">Products</a></li>
                     <li><a href="#about">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>VISIT US</h4>
-                <p>1248 Industrial Pkwy<br>Riverside, CA 92501</p>
-                <p>+1 951-123-4567</p>
-                <p>info@juanico.com</p>
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="<?= url('/products') ?>">Steel & Rebar</a></li>
+                    <li><a href="<?= url('/products') ?>">Cement & Aggregates</a></li>
+                    <li><a href="<?= url('/products') ?>">Lumber</a></li>
+                    <li><a href="<?= url('/products') ?>">Tools & Hardware</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><a href="#">support@juanico.com</a></li>
+                    <li><a href="#">+1 (555) 123-4567</a></li>
+                    <li><a href="#">123 Builder Ave, Metro City</a></li>
+                </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Juanico. All rights reserved.</p>
+            <p>&copy; 2026 Juanico Construction Supplies. All rights reserved.</p>
         </div>
     </footer>
 
-    <?php include basePath('views/products/_cart.php'); ?>
-    
+    <?php
+    $cartProducts = []; // Fetch or define if needed for homepage
+    require __DIR__ . '/../products/_cart.php';
+    ?>
 </body>
 </html>

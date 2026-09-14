@@ -18,10 +18,10 @@
                 <li><a href="#">Orders</a></li>
                 <li><a href="#">Users</a></li>
             </ul>
-            <div style="margin-top:auto; padding:1.5rem;">
+            <div style="margin-top:auto; padding:2rem;">
                 <form action="<?= url('/logout') ?>" method="POST">
                     <?= csrf_field() ?>
-                    <button type="submit" class="btn-secondary" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor:pointer;">LOGOUT</button>
+                    <button type="submit" class="btn-secondary" style="width:100%; border-color:#475569; color:#cbd5e1;">LOGOUT</button>
                 </form>
             </div>
         </aside>
@@ -29,7 +29,7 @@
         <!-- Main Content -->
         <main class="admin-content">
             <div class="admin-header">
-                <h1>Manage Products</h1>
+                <h1>Product Inventory</h1>
                 <div>
                     <a href="<?= url('/admin/products/create') ?>" class="btn-primary">+ Add New Product</a>
                 </div>
@@ -41,47 +41,53 @@
 
             <div class="admin-table-card">
                 <?php if (empty($products)): ?>
-                    <div style="padding:2rem; color:#666;">No products found.</div>
+                    <div style="padding:4rem; text-align:center; color:#64748b;">
+                        <div style="font-size:3rem; margin-bottom:1rem;">📦</div>
+                        <h2>No products found</h2>
+                        <p>Get started by adding your first product.</p>
+                    </div>
                 <?php else: ?>
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Image</th>
-                                <th>Name</th>
+                                <th>Product Details</th>
                                 <th>SKU</th>
                                 <th>Price</th>
                                 <th>Stock</th>
-                                <th>Active</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($products as $product): ?>
                                 <tr>
-                                    <td><?= e((string) $product['product_id']) ?></td>
                                     <td>
-                                        <?php if (!empty($product['images'])): ?>
-                                            <img src="<?= url($product['images'][0]['url']) ?>" alt="<?= e($product['name']) ?>" width="40" height="40" style="object-fit:cover; border-radius:4px; border:1px solid #ddd;">
-                                        <?php else: ?>
-                                            <span style="color:#999; font-size:0.8rem;">No image</span>
-                                        <?php endif; ?>
+                                        <div style="display:flex; align-items:center; gap:1rem;">
+                                            <?php if (!empty($product['images'])): ?>
+                                                <img src="<?= url($product['images'][0]['url']) ?>" alt="<?= e($product['name']) ?>" style="width:48px; height:48px; object-fit:cover; border-radius:8px; border:1px solid #e2e8f0; background:#f1f5f9;">
+                                            <?php else: ?>
+                                                <div style="width:48px; height:48px; border-radius:8px; background:#f1f5f9; border:1px solid #e2e8f0;"></div>
+                                            <?php endif; ?>
+                                            <div>
+                                                <div style="font-weight:700; color:#0f172a; margin-bottom:0.25rem;"><?= e($product['name']) ?></div>
+                                                <div style="font-size:0.8rem; color:#64748b;">ID: <?= e((string) $product['product_id']) ?></div>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td style="font-weight:600; color:#1a252c;"><?= e($product['name']) ?></td>
-                                    <td><?= e($product['sku']) ?></td>
-                                    <td>₱<?= e(number_format((float) $product['price'], 2)) ?></td>
+                                    <td style="color:#475569; font-weight:500; font-size:0.9rem;"><?= e($product['sku']) ?></td>
+                                    <td style="font-weight:700; color:#0f172a;">₱<?= e(number_format((float) $product['price'], 2)) ?></td>
                                     <td>
                                         <?php if ($product['stock_quantity'] > 0): ?>
-                                            <?= e((string) $product['stock_quantity']) ?>
+                                            <span style="font-weight:600; color:#475569;"><?= e((string) $product['stock_quantity']) ?></span>
                                         <?php else: ?>
-                                            <span class="status-inactive">Out</span>
+                                            <span class="status-inactive">Out of Stock</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php if ($product['is_active']): ?>
-                                            <span class="badge badge-success">Yes</span>
+                                            <span class="badge badge-success">Active</span>
                                         <?php else: ?>
-                                            <span class="badge badge-warning">No</span>
+                                            <span class="badge badge-warning">Draft</span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="action-links">

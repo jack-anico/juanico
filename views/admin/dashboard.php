@@ -18,10 +18,10 @@
                 <li><a href="#">Orders</a></li>
                 <li><a href="#">Users</a></li>
             </ul>
-            <div style="margin-top:auto; padding:1.5rem;">
+            <div style="margin-top:auto; padding:2rem;">
                 <form action="<?= url('/logout') ?>" method="POST">
                     <?= csrf_field() ?>
-                    <button type="submit" class="btn-secondary" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor:pointer;">LOGOUT</button>
+                    <button type="submit" class="btn-secondary" style="width:100%; border-color:#475569; color:#cbd5e1;">LOGOUT</button>
                 </form>
             </div>
         </aside>
@@ -29,9 +29,13 @@
         <!-- Main Content -->
         <main class="admin-content">
             <div class="admin-header">
-                <h1>Dashboard</h1>
-                <div>
-                    <span style="color:#666; font-weight:600;">Welcome, Admin!</span>
+                <h1>Dashboard Overview</h1>
+                <div style="display:flex; align-items:center; gap:1rem;">
+                    <div class="avatar"></div>
+                    <div>
+                        <p style="color:#0f172a; font-weight:600; font-size:0.95rem; margin:0;">Super Admin</p>
+                        <p style="color:#64748b; font-size:0.8rem; margin:0;">Welcome back!</p>
+                    </div>
                 </div>
             </div>
 
@@ -55,11 +59,13 @@
                 </div>
             </div>
 
-            <div class="admin-table-card" style="padding:2rem;">
-                <h2 style="color:#1a252c; margin-bottom:1rem;">Welcome to the Admin Panel</h2>
-                <p style="color:#666;">Use the sidebar navigation to manage products, view orders, and administer the Juanico storefront.</p>
-                <br>
-                <a href="<?= url('/admin/products/create') ?>" class="btn-primary" style="display:inline-block;">+ Add New Product</a>
+            <div class="admin-table-card" style="padding:3rem;">
+                <h2 style="color:#0f172a; margin-bottom:1rem; font-size:1.8rem; font-weight:800; letter-spacing:-0.5px;">Quick Actions</h2>
+                <p style="color:#64748b; margin-bottom:2rem; font-size:1.05rem;">Use the sidebar navigation to manage products, view orders, and administer the Juanico storefront.</p>
+                <div style="display:flex; gap:1rem;">
+                    <a href="<?= url('/admin/products/create') ?>" class="btn-primary">+ Add New Product</a>
+                    <a href="<?= url('/admin/products') ?>" class="btn-secondary">View Inventory</a>
+                </div>
             </div>
         </main>
     </div>
